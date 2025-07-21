@@ -13,7 +13,7 @@ public class MusicController {
     private final MusicService musicService;
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchMusic(@RequestParam String query) {
+    public ResponseEntity<?> searchMusic(@RequestParam("q") String query)  {
         return ResponseEntity.ok(musicService.searchTracks(query));
     }
 

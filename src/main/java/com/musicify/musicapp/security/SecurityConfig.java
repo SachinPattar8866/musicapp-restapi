@@ -14,6 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration; // NEW Import
+import org.springframework.web.cors.CorsConfigurationSource; // NEW Import
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource; // NEW Import
+
+import java.util.Arrays; // NEW Import
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,6 +31,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Enable CORS configuration
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ADDED THIS LINE
                 .csrf(csrf -> csrf.disable())
                 .exceptionHandling(e -> e.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -37,6 +44,23 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    // Define the CORS Configuration Source Bean
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // IMPORTANT: Set your frontend's origin(s) here.
+        // For local development, it's typically http://localhost:5173 (Vite default)
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Make sure this matches your frontend URL
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow common HTTP methods
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Allow necessary headers
+        configuration.setAllowCredentials(true); // Allow sending cookies/authorization headers (important for JWT)
+        configuration.setMaxAge(3600L); // How long the pre-flight request can be cached (in seconds)
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Apply this CORS config to all paths
+        return source;
     }
 
     @Bean
