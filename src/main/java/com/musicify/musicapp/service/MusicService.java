@@ -48,9 +48,9 @@ public class MusicService {
                     songs.add(new SongDTO(
                             trackNode.path("id").asText(),
                             trackNode.path("name").asText(),
-                            trackNode.path("artistName").asText(),   // Jamendo: "artistName" -> SongDTO: artistName
+                            trackNode.path("artist_name").asText(),   // Jamendo: "artist_name" -> SongDTO: artistName
                             trackNode.path("audio").asText(),        // Jamendo: "audio" -> SongDTO: audioUrl
-                            trackNode.path("coverTenant").asText()   // Jamendo: "coverTenant" -> SongDTO: coverImage
+                            trackNode.path("album_image").asText()   // Jamendo: "album_image" -> SongDTO: coverImage
                     ));
                 }
             }
@@ -77,9 +77,9 @@ public class MusicService {
             return new SongDTO(
                     track.path("id").asText(),
                     track.path("name").asText(),
-                    track.path("artistName").asText(),     // <--- CHANGE: Jamendo uses "artistName"
+                    track.path("artist_name").asText(),     // <--- CHANGE: Jamendo uses "artist_name"
                     track.path("audio").asText(),          // <--- CHANGE: Jamendo uses "audio"
-                    track.path("coverTenant").asText()     // <--- CHANGE: Jamendo uses "coverTenant"
+                    track.path("album_image").asText()     // <--- CHANGE: Jamendo uses "album_image"
             );
         } catch (Exception e) {
             e.printStackTrace();
