@@ -19,7 +19,7 @@
 	<description>Backend for YouTube Music Clone using Spring Boot, MongoDB and Jamendo API</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>19</java.version>
 	</properties>
 
 	<dependencies>
