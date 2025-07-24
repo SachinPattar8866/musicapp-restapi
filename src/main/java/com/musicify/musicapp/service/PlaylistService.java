@@ -11,6 +11,19 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PlaylistService {
+    // Get playlists for the current authenticated user
+    public List<Playlist> getCurrentUserPlaylists() {
+        // Example: get userId from Spring Security context
+        String userId = null;
+        org.springframework.security.core.Authentication authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            userId = authentication.getName();
+        }
+        if (userId == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+        return playlistRepository.findTop20ByUserIdOrderByCreatedAtDesc(userId);
+    }
 
     private final PlaylistRepository playlistRepository;
 
@@ -19,12 +32,13 @@ public class PlaylistService {
                 .name(request.getName())
                 .userId(request.getUserId())
                 .songIds(request.getSongIds())
+                .createdAt(System.currentTimeMillis())
                 .build();
         return playlistRepository.save(playlist);
     }
 
     public List<Playlist> getPlaylistsByUserId(String userId) {
-        return playlistRepository.findByUserId(userId);
+        return playlistRepository.findTop20ByUserIdOrderByCreatedAtDesc(userId);
     }
 
     public Playlist updatePlaylist(String playlistId, PlaylistRequest request) {

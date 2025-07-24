@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface LikedSongRepository extends MongoRepository<LikedSong, String> {
 
-    List<LikedSong> findByUserId(String userId);
+    List<LikedSong> findTop20ByUserIdOrderByLikedAtDesc(String userId);
 
     Optional<LikedSong> findByUserIdAndTrackId(String userId, String trackId);
 

@@ -39,7 +39,10 @@ public class LikeController {
     public ResponseEntity<List<SongDTO>> getLikedSongs(
             @RequestHeader("Authorization") String token
     ) {
+        long start = System.currentTimeMillis();
         List<SongDTO> songs = likeService.getLikedSongs(token);
+        long end = System.currentTimeMillis();
+        System.out.println("getLikedSongs response time: " + (end - start) + "ms");
         return ResponseEntity.ok(songs);
     }
 }

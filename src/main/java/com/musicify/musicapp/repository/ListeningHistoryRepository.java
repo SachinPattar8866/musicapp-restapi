@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ListeningHistoryRepository extends MongoRepository<ListeningHistory, String> {
 
-    List<ListeningHistory> findByUserIdOrderByPlayedAtDesc(String userId);
+    List<ListeningHistory> findTop20ByUserIdOrderByPlayedAtDesc(String userId);
 }

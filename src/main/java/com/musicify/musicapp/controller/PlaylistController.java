@@ -21,9 +21,14 @@ public class PlaylistController {
         return ResponseEntity.ok(playlistService.createPlaylist(request));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Playlist>> getUserPlaylists(@PathVariable String userId) {
-        return ResponseEntity.ok(playlistService.getPlaylistsByUserId(userId));
+    // GET /api/playlists/user - get playlists for current authenticated user
+    @GetMapping("/user")
+    public ResponseEntity<List<Playlist>> getCurrentUserPlaylists() {
+        long start = System.currentTimeMillis();
+        List<Playlist> playlists = playlistService.getCurrentUserPlaylists();
+        long end = System.currentTimeMillis();
+        System.out.println("getCurrentUserPlaylists response time: " + (end - start) + "ms");
+        return ResponseEntity.ok(playlists);
     }
 
     @PutMapping("/{playlistId}")

@@ -43,7 +43,7 @@ public class LikeService {
 
     public List<SongDTO> getLikedSongs(String token) {
         String userId = jwtUtils.extractUserId(token);
-        List<LikedSong> likedSongs = likedSongRepository.findByUserId(userId);
+        List<LikedSong> likedSongs = likedSongRepository.findTop20ByUserIdOrderByLikedAtDesc(userId);
         return likedSongs.stream()
                 .map(song -> musicService.getSongById(song.getTrackId()))
                 .collect(Collectors.toList());

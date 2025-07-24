@@ -30,7 +30,10 @@ public class HistoryController {
     public ResponseEntity<List<SongDTO>> getHistory(
             @RequestHeader("Authorization") String token
     ) {
+        long start = System.currentTimeMillis();
         List<SongDTO> history = historyService.getHistory(token);
+        long end = System.currentTimeMillis();
+        System.out.println("getHistory response time: " + (end - start) + "ms");
         return ResponseEntity.ok(history);
     }
 }

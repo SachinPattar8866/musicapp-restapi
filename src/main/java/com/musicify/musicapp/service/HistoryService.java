@@ -30,7 +30,7 @@ public class HistoryService {
 
     public List<SongDTO> getHistory(String token) {
         String userId = jwtUtils.extractUserId(token);
-        List<ListeningHistory> history = historyRepository.findByUserIdOrderByPlayedAtDesc(userId);
+        List<ListeningHistory> history = historyRepository.findTop20ByUserIdOrderByPlayedAtDesc(userId);
         return history.stream()
                 .map(h -> musicService.getSongById(h.getTrackId()))
                 .collect(Collectors.toList());
