@@ -20,4 +20,5 @@ public class Playlist {
 
     private String name;            // Playlist name
     private List<String> songIds;   // Jamendo song IDs
+    private long createdAt;         // Timestamp for creation (epoch millis)
 }
