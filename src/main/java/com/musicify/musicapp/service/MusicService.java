@@ -86,4 +86,16 @@ public class MusicService {
             return null;
         }
     }
+
+    public List<SongDTO> getSongsByIds(List<String> trackIds) {
+        if (trackIds == null || trackIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        String ids = String.join(",", trackIds);
+        String url = jamendoConfig.getApiUrl()
+                + "/tracks/?client_id=" + jamendoConfig.getClientId()
+                + "&format=json&id=" + ids;
+
+        return fetchAndParseJamendoSongs(url);
+    }
 }
