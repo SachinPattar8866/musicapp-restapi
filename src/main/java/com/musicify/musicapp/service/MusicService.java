@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-// import java.util.stream.Collectors; // Not used in this version, can be removed
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +47,9 @@ public class MusicService {
                     songs.add(new SongDTO(
                             trackNode.path("id").asText(),
                             trackNode.path("name").asText(),
-                            trackNode.path("artist_name").asText(),   // Jamendo: "artist_name" -> SongDTO: artistName
-                            trackNode.path("audio").asText(),        // Jamendo: "audio" -> SongDTO: audioUrl
-                            trackNode.path("album_image").asText()   // Jamendo: "album_image" -> SongDTO: coverImage
+                            trackNode.path("artist_name").asText(),
+                            trackNode.path("audio").asText(),
+                            trackNode.path("album_image").asText()
                     ));
                 }
             }
@@ -77,9 +76,9 @@ public class MusicService {
             return new SongDTO(
                     track.path("id").asText(),
                     track.path("name").asText(),
-                    track.path("artist_name").asText(),     // <--- CHANGE: Jamendo uses "artist_name"
-                    track.path("audio").asText(),          // <--- CHANGE: Jamendo uses "audio"
-                    track.path("album_image").asText()     // <--- CHANGE: Jamendo uses "album_image"
+                    track.path("artist_name").asText(),
+                    track.path("audio").asText(),
+                    track.path("album_image").asText()
             );
         } catch (Exception e) {
             e.printStackTrace();
