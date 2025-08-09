@@ -29,15 +29,19 @@ public class HistoryService {
     }
 
     public List<SongDTO> getHistory(String token) {
-        String userId = jwtUtils.extractUserId(token);
-        List<ListeningHistory> history = historyRepository.findTop20ByUserIdOrderByPlayedAtDesc(userId);
-    
-    // Extract all track IDs from the history
-        List<String> trackIds = history.stream()
-                .map(ListeningHistory::getTrackId)
-                .collect(Collectors.toList());
-
-    // Make one single, bulk API call to get all song details
-        return musicService.getSongsByIds(trackIds);
+    String userId = jwtUtils.extractUserId(token);
+    System.out.println("[DEBUG] getHistory for userId: " + userId);
+    List<ListeningHistory> history = historyRepository.findTop20ByUserIdOrderByPlayedAtDesc(userId);
+    System.out.println("[DEBUG] ListeningHistory records: " + history.size());
+    List<String> trackIds = history.stream()
+        .map(ListeningHistory::getTrackId)
+        .collect(Collectors.toList());
+    System.out.println("[DEBUG] Track IDs: " + trackIds);
+    List<SongDTO> songs = musicService.getSongsByIds(trackIds);
+    System.out.println("[DEBUG] Songs returned: " + songs.size());
+    for (SongDTO song : songs) {
+        System.out.println("[DEBUG] SongDTO: " + song);
+    }
+    return songs;
     }
 }
