@@ -37,11 +37,26 @@ public class HistoryService {
         .map(ListeningHistory::getTrackId)
         .collect(Collectors.toList());
     System.out.println("[DEBUG] Track IDs: " + trackIds);
-    List<SongDTO> songs = musicService.getSongsByIds(trackIds);
-    System.out.println("[DEBUG] Songs returned: " + songs.size());
-    for (SongDTO song : songs) {
-        System.out.println("[DEBUG] SongDTO: " + song);
-    }
-    return songs;
+        List<SongDTO> songs = musicService.getSongsByIds(trackIds);
+        System.out.println("[DEBUG] Songs returned: " + songs.size());
+        for (SongDTO song : songs) {
+            System.out.println("[DEBUG] SongDTO: " + song);
+        }
+        // Fallback: If bulk API returns zero songs, fetch each individually
+        if (songs.isEmpty() && !trackIds.isEmpty()) {
+            System.out.println("[DEBUG] Bulk API returned zero songs, trying individual fetches...");
+            songs = trackIds.stream()
+                .map(id -> {
+                    SongDTO song = musicService.getSongById(id);
+                    if (song != null) {
+                        System.out.println("[DEBUG] Individual SongDTO: " + song);
+                    }
+                    return song;
+                })
+                .filter(s -> s != null)
+                .collect(Collectors.toList());
+            System.out.println("[DEBUG] Songs after individual fetch: " + songs.size());
+        }
+        return songs;
     }
 }
